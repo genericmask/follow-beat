@@ -1,24 +1,5 @@
 # follow-beat
 
-## Project setup
 ```
-npm install
+A Vue 2 app with a metronome and a button to press. Try and match the BPM of the metronome here: www.caseyfeikema.com
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
