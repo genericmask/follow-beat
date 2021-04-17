@@ -1,11 +1,12 @@
 <template>
     <div>
         <div id="metronomeInputs">
-            <h3>Metronome BPM:  <input v-model.number="metronome.bpm" class="input-number" type="number" min="20" max="160" 
-                size="3"/>
+            <button class="on-off" @click="metronome.toggleOnOff()">{{buttonDoes}} Metronome</button>
+            <h3><input v-model.number="metronome.bpm" class="input-number" type="number" min="20" max="160" 
+                size="2"/> BPM
             </h3>
         </div>
-        <button class="on-off" @click="metronome.toggleOnOff()">{{buttonDoes}} Metronome</button>
+        
     </div>
 </template>
 
@@ -76,12 +77,19 @@ export default {
 </script>
 
 <style>
+#metronomeInputs{
+  display: inline-grid;
+  grid-auto-flow: column;
+  justify-items: center;
+  align-items: center;
+}
 .on-off {
     background: white;
-    border-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     display: inline-block;
-    border: none;
-    padding: 0.5rem 0.75rem;
+    border: 4px solid white;
+    margin-right: 2px;
     text-decoration: none;
     color: #2c3035;
     font-family: inherit;
@@ -90,6 +98,7 @@ export default {
     text-align: center;
     -webkit-appearance: none;
     -moz-appearance: none;
+    outline: none;
 }
 
 .input-number{
@@ -98,6 +107,9 @@ export default {
     color: #2c3035;
     background-color: white;
     border: 4px solid white;
-    border-radius: 4px;    
+    padding-left: 6px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;  
+    outline: none;
 }
 </style>
