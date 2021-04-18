@@ -12,7 +12,7 @@
 
 <script>
 
-const soundFilePath = require("@/assets/drumSticks.mp3");
+const soundFilePath = require("@/assets/tick.mp3");
 
 class Metronome {
     constructor(bpm) {
