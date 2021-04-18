@@ -45,6 +45,9 @@ class Metronome {
 
 export default {
   name: 'Metronome',
+  emits: {
+      'update:bpm': null
+  },
   props: {
       initialBPM: {
           type: Number,
