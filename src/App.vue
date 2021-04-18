@@ -80,36 +80,18 @@ export default {
   color: #fff;
 }
 
-.main-container{
-  display: grid;
-  place-items: center;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas: 
-    "header header header"
-    "main-top main-top main-top"
-    "main main main"
-    "footer footer footer";
-}
-
-.title{
-  grid-area: header;
-}
-
-.metronome{
-  grid-area: main-top;
-}
-
 .tempo-button{
-  grid-area: main;
   position: absolute;
-  top: 40%;
+  top: 50%;
+  left: 50%;
   width: 220px;
   height: 220px;
   border-radius: 50%;
   border: none;
   outline: none;
   user-select: none;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
   transition: all ease-out .15s;
 }
 
@@ -134,6 +116,8 @@ export default {
   left: 4%;
   bottom: 4%;
   right: 4%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -155,7 +139,10 @@ export default {
 }
 
 .statistics{
-  grid-area: footer;
+  position: absolute;
+  bottom: 10%;
+  left: 5%;
+  right: 5%;
 }
 
 .button{
