@@ -4,13 +4,14 @@
       <h1>{{title}}</h1>
     </div>
     <div class="metronome">
-      <Metronome @update:bpm="resetAverage"/>
+      <Metronome @update:bpm="handleMetronomeBPMUpdate"/>
     </div>
     <button class="tempo-button" @mousedown="updateClickTime">
       <div class="tempo-outline"></div>
       <div class="tempo-line"></div>
+      <div class="tempo-line user-line" :style="{transform: userLineRotation}"></div>
       <div class="container">
-        <div class="user-tempo">{{buttonClickBPM}}</div>
+        <div class="user-tempo">{{buttonClickBPM.toFixed(1)}}</div>
         <div class="tempo-message">{{tempoMessage}}</div>
       </div>
       
@@ -36,22 +37,31 @@ export default {
     return {
         title: "Follow the beat!",
         tempoMessage: "Click me!",
-        buttonClickBPM: (0).toFixed(1), // Without toFixed(1), buttonClickBPM will initialize as 0 and then change to 0.0 at the first button press
+        buttonClickBPM: 0,
         clickTime: 0,  
-        allUserBPMs: []
+        clickTimeDifference: 0,
+        allUserBPMs: [],
+        metronomeBPM: 60,
     }
   },
   watch: {
       clickTime: {
           handler(newTime, oldTime){
-              this.tempoMessage = "BPM";
+              this.tempoMessage = "BPM"; // After the first click, change the message to this.
               this.buttonClickBPM = this.calculateBPM(newTime, oldTime);
+              this.clickTimeDifference = (newTime - oldTime) % this.msBetweenBeats;
           },
           flush: 'post'
       }
   },
   computed: {
-
+    msBetweenBeats(){
+      return (60/this.metronomeBPM)*1000;
+    },
+    userLineRotation(){
+      let rotationDegrees = (this.clickTimeDifference/this.msBetweenBeats)*360;
+      return "rotate(" + rotationDegrees.toFixed(1) + "deg)";
+    }
   },
   methods: {
     updateClickTime(){ 
@@ -60,10 +70,14 @@ export default {
     calculateBPM(newTime, oldTime){
         let BPM = (60/((newTime-oldTime)/1000));
         if(BPM > 1) this.allUserBPMs.push(BPM); // less than 1 is an outlier that contaminates the array
-        return BPM.toFixed(1);
+        return BPM
     },
     resetAverage(){
       this.allUserBPMs = [];
+    },
+    handleMetronomeBPMUpdate(newBPM){
+      this.resetAverage();
+      this.metronomeBPM = newBPM;
     }
   }
 }
@@ -117,18 +131,14 @@ export default {
 	left: -4%;
 	bottom: -4%;
 	right: -4%;
-  background: linear-gradient(#d13838, transparent) no-repeat center/5px 100%;
-  animation: spin 1.5s linear infinite;
 	cursor: pointer;
 	border-radius: 50%;
+  background: linear-gradient(#fff, transparent) no-repeat center/5px 100%;
 }
-@keyframes spin {
- 0% {
-  transform:rotate(0deg)
- }
- to {
-  transform:rotate(1turn)
- }
+
+.user-line{
+  background: linear-gradient(#d13838, transparent) no-repeat center/5px 100%;
+  transform: rotate(280deg);
 }
 
 .container{
