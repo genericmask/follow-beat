@@ -4,20 +4,21 @@
       <h1>{{title}}</h1>
     </div>
     <div class="metronome">
-      <Metronome @update:bpm="resetStats"/>
+      <Metronome @update:bpm="resetAverage"/>
     </div>
     <button class="tempo-button" @mousedown="updateClickTime">
       <div class="tempo-outline"></div>
+      <div class="tempo-line"></div>
       <div class="container">
         <div class="user-tempo">{{buttonClickBPM}}</div>
         <div class="tempo-message">{{tempoMessage}}</div>
       </div>
+      
     </button>
     <div class="statistics">
       <AverageStat name="BPM" :numArray="allUserBPMs"/>
-      <button class="button reset" @click="resetStats">Reset Average</button>
+      <button class="button reset" @click="resetAverage">Reset Average</button>
     </div>
-    
   </div>
 </template>
 
@@ -61,7 +62,7 @@ export default {
         if(BPM > 1) this.allUserBPMs.push(BPM); // less than 1 is an outlier that contaminates the array
         return BPM.toFixed(1);
     },
-    resetStats(){
+    resetAverage(){
       this.allUserBPMs = [];
     }
   }
@@ -108,6 +109,26 @@ export default {
   background: linear-gradient(to right bottom, #38d18c, #ffffff);
 	cursor: pointer;
 	border-radius: 50%;
+}
+
+.tempo-line{
+	position: absolute;
+	top: -4%;
+	left: -4%;
+	bottom: -4%;
+	right: -4%;
+  background: linear-gradient(#d13838, transparent) no-repeat center/5px 100%;
+  animation: spin 1.5s linear infinite;
+	cursor: pointer;
+	border-radius: 50%;
+}
+@keyframes spin {
+ 0% {
+  transform:rotate(0deg)
+ }
+ to {
+  transform:rotate(1turn)
+ }
 }
 
 .container{
