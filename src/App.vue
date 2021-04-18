@@ -14,19 +14,22 @@
       </div>
     </button>
     <div class="statistics">
-        <h3>Your Average BPM: {{averageUserBPM}}</h3>
-        <button class="button reset" @click="resetStats" >Reset Statistics</button>
+      <AverageStat name="BPM" :numArray="allUserBPMs"/>
+      <button class="button reset" @click="resetStats">Reset Statistic</button>
     </div>
+    
   </div>
 </template>
 
 <script>
 import Metronome from './components/Metronome.vue'
+import AverageStat from './components/AverageStat.vue'
 
 export default {
   name: 'App',
   components: {
-      Metronome
+      Metronome,
+      AverageStat
   },
   data() {
     return {
@@ -47,17 +50,7 @@ export default {
       }
   },
   computed: {
-    averageUserBPM(){
-      let sum = 0;
-      let average = 0;
-      if(this.allUserBPMs.length > 1){
-        this.allUserBPMs.forEach(function(userBPM){
-          sum += userBPM;
-        })
-        average = (sum/(this.allUserBPMs.length))
-      }
-      return average.toFixed(1);
-    }
+
   },
   methods: {
     updateClickTime(){ 
@@ -163,10 +156,6 @@ export default {
 
 .statistics{
   grid-area: footer;
-  display: inline-grid;
-  grid-auto-flow: column;
-  justify-items: center;
-  align-items: center;
 }
 
 .button{
@@ -188,4 +177,5 @@ export default {
 .reset{
   margin-left: 10px;
 }
+
 </style>
