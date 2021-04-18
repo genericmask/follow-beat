@@ -4,7 +4,7 @@
       <h1>{{title}}</h1>
     </div>
     <div class="metronome">
-      <Metronome/>
+      <Metronome @update:bpm="resetStats"/>
     </div>
     <button class="tempo-button" @mousedown="updateClickTime">
       <div class="tempo-outline"></div>
@@ -15,7 +15,7 @@
     </button>
     <div class="statistics">
       <AverageStat name="BPM" :numArray="allUserBPMs"/>
-      <button class="button reset" @click="resetStats">Reset Statistic</button>
+      <button class="button reset" @click="resetStats">Reset Average</button>
     </div>
     
   </div>

@@ -1,12 +1,12 @@
 <template>
     <div>
         <div id="metronomeInputs">
-            <button class="toggle" :class="{'on': !metronome.keepingBeat, 'off': metronome.keepingBeat}" @click="metronome.toggleOnOff()">{{buttonDoes}} Metronome</button>
-            <h3><input v-model.number="metronome.bpm" class="input-number" type="number" min="20" max="160" 
-                size="2"/> BPM
-            </h3>
+            <button class="toggle" :class="{'green': !metronome.keepingBeat, 'red': metronome.keepingBeat}" 
+                @click="metronome.toggleOnOff()">{{toggleButtonTitle}}</button>
+            <input v-model.number="metronome.bpm" @change="$emit('update:bpm', $event.target.value)" 
+                class="bpm-input" type="number" min="20" max="160" size="2"/>
+            <h3>BPM</h3>
         </div>
-        
     </div>
 </template>
 
@@ -65,11 +65,11 @@ export default {
       }
   },
   computed: {
-      buttonDoes(){
+      toggleButtonTitle(){
           if(this.metronome.keepingBeat){
-              return "Stop";
+              return "Stop Metronome";
           } else{
-              return "Start";
+              return "Start Metronome";
           }
       }
   }
@@ -83,8 +83,8 @@ export default {
   justify-items: center;
   align-items: center;
 }
+
 .toggle {
-    
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
     display: inline-block;
@@ -100,15 +100,18 @@ export default {
     -moz-appearance: none;
     outline: none;
 }
-.on{
+
+.green{
   background: #38d18c;
   border: 4px solid #38d18c;
 }
-.off{
+
+.red{
   background: #d13838;
   border: 4px solid #d13838;
 }
-.input-number{
+
+.bpm-input{
     font-size: 16px;
     font-family: inherit;
     background-color: white;
@@ -117,5 +120,6 @@ export default {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;  
     outline: none;
+    margin-right: 8px;
 }
 </style>
