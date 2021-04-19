@@ -1,14 +1,5 @@
 <template>
   <div id="app" class="main-container">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C91048HF81"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-C91048HF81');
-    </script>
     <div class="title">
       <h1>{{title}}</h1>
     </div>
@@ -20,10 +11,9 @@
       <div class="tempo-line"></div>
       <div class="tempo-line user-line" :style="{transform: userLineRotation}"></div>
       <div class="container">
-        <div class="user-tempo">{{buttonClickBPM.toFixed(1)}}</div>
+        <div class="button-click-bpm">{{buttonClickBPM.toFixed(1)}}</div>
         <div class="tempo-message">{{tempoMessage}}</div>
       </div>
-      
     </button>
     <div class="statistics">
       <AverageStat name="BPM" :numArray="allUserBPMs"/>
@@ -127,8 +117,8 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   border: none;
   outline: none;
@@ -184,7 +174,7 @@ export default {
   border-radius: 50%;
 }
 
-.user-tempo{
+.button-click-bpm{
   color: white;
   font-size: 4rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
