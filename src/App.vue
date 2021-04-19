@@ -1,5 +1,14 @@
 <template>
   <div id="app" class="main-container">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C91048HF81"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-C91048HF81');
+    </script>
     <div class="title">
       <h1>{{title}}</h1>
     </div>
