@@ -36,48 +36,65 @@ export default {
   data() {
     return {
         title: "Follow the beat!",
-        tempoMessage: "Click me!",
         buttonClickBPM: 0,
         clickTime: 0,  
-        clickTimeDifference: 0,
+        clickTimeDiff: 0,
         allUserBPMs: [],
         metronomeBPM: 60,
     }
   },
   watch: {
       clickTime: {
-          handler(newTime, oldTime){
-              this.tempoMessage = "BPM"; // After the first click, change the message to this.
-              this.buttonClickBPM = this.calculateBPM(newTime, oldTime);
-              this.clickTimeDifference = (newTime - oldTime) % this.msBetweenBeats;
-          },
-          flush: 'post'
+        handler(newTime, oldTime){
+          this.buttonClickBPM = this.calcBPM(newTime, oldTime);
+          this.clickTimeDiff = this.calcClickTimeDiff(newTime, oldTime);
+        },
+        flush: 'post'
+      },
+      buttonClickBPM: {
+        handler(newBPM){
+          // less than 1 is an outlier that contaminates the array
+          if(newBPM > 1) this.allUserBPMs.push(newBPM); 
+        }
       }
   },
   computed: {
+    buttonClickBPMAccurate(){ 
+      // BPM < 0.05 are not accurate. They occur because buttonClickBPM is initialized to 0
+      return this.buttonClickBPM > 0.05;
+    },
     msBetweenBeats(){
       return (60/this.metronomeBPM)*1000;
     },
     userLineRotation(){
-      let rotationDegrees = (this.clickTimeDifference/this.msBetweenBeats)*360;
-      return "rotate(" + rotationDegrees.toFixed(1) + "deg)";
+      let rotationDegrees = 0;
+      if (this.buttonClickBPMAccurate) rotationDegrees = this.calcRotationDegrees();
+      return "rotate(" + rotationDegrees + "deg)";
+    },
+    tempoMessage(){ // Once we have an accurate BPM, change the message to "BPM".
+      return this.buttonClickBPMAccurate ? "BPM" : "Click me!"; 
     }
   },
   methods: {
-    updateClickTime(){ 
-        this.clickTime = new Date().getTime(); 
-    },
-    calculateBPM(newTime, oldTime){
-        let BPM = (60/((newTime-oldTime)/1000));
-        if(BPM > 1) this.allUserBPMs.push(BPM); // less than 1 is an outlier that contaminates the array
-        return BPM
+    handleMetronomeBPMUpdate(newBPM){
+      this.resetAverage();
+      this.metronomeBPM = newBPM;
     },
     resetAverage(){
       this.allUserBPMs = [];
     },
-    handleMetronomeBPMUpdate(newBPM){
-      this.resetAverage();
-      this.metronomeBPM = newBPM;
+    updateClickTime(){ 
+      this.clickTime = new Date().getTime(); 
+    },
+    calcBPM(newTime, oldTime){
+      let BPM = (60/((newTime-oldTime)/1000));
+      return BPM
+    },
+    calcClickTimeDiff(newTime, oldTime){
+      return (newTime - oldTime) % this.msBetweenBeats;
+    },
+    calcRotationDegrees(){
+      return ((this.clickTimeDiff/this.msBetweenBeats)*360).toFixed(1);
     }
   }
 }
