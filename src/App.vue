@@ -60,7 +60,9 @@ export default {
   },
   computed: {
     buttonClickBPMAccurate(){ 
-      // BPM < 0.05 are not accurate. They occur because buttonClickBPM is initialized to 0
+      // BPM < 0.05 are not accurate. They initially occur because buttonClickBPM is initialized to 0
+      // and this helps detect when the user has clicked the button enough times (twice)
+      // to get a BPM.
       return this.buttonClickBPM > 0.05;
     },
     msBetweenBeats(){
