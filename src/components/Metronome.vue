@@ -4,7 +4,7 @@
             <button class="toggle" :class="{'green': !metronome.keepingBeat, 'red': metronome.keepingBeat}" 
                 @click="metronome.toggleOnOff()">{{toggleButtonTitle}}</button>
             <input v-model.number="metronome.bpm" @change="$emit('update:bpm', $event.target.value)" 
-                class="bpm-input" type="number" min="20" max="160" size="2"/>
+                class="bpm-input" type="number" min="20" max="160" size="3"/>
             <h3>BPM</h3>
         </div>
     </div>
@@ -15,15 +15,17 @@
 const soundFilePath = require("@/assets/tick.mp3");
 
 class Metronome {
-    constructor(bpm) {
+    constructor(bpm, soundFilePath) {
         this.bpm = bpm; 
         this.beatSound = new Audio(soundFilePath);
         this.keepingBeat = false;
     }
+    get msBetweenBeats() {
+        return (60/this.bpm)*1000;
+    }
     start(){
-        let msBetweenBeats = (60/this.bpm)*1000;
         this.beatSound.play(); // Play an initial beat
-        this.intervalID = setInterval(()=>(this.beatSound.play()), msBetweenBeats);
+        this.intervalID = setInterval(()=>(this.beatSound.play()), this.msBetweenBeats);
         this.keepingBeat = true;
     }
     stop(){
@@ -56,7 +58,7 @@ export default {
   },
   data() {
     return {
-        metronome: new Metronome(this.initialBPM)
+        metronome: new Metronome(this.initialBPM, soundFilePath)
     }
   },
   watch: {
@@ -81,17 +83,16 @@ export default {
 
 <style>
 #metronomeInputs{
-  display: inline-grid;
-  grid-auto-flow: column;
-  justify-items: center;
-  align-items: center;
+    display: inline-grid;
+    grid-auto-flow: column;
+    justify-items: center;
+    align-items: center;
 }
 
 .toggle {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-radius: 4px;
     display: inline-block;
-    
+    margin-right: 8px;
     text-decoration: none;
     font-family: inherit;
     font-size: 1rem;
@@ -101,17 +102,18 @@ export default {
     text-align: center;
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
     outline: none;
 }
 
 .green{
-  background: #38d18c;
-  border: 4px solid #38d18c;
+    background: #38d18c;
+    border: 4px solid #38d18c;
 }
 
 .red{
-  background: #d13838;
-  border: 4px solid #d13838;
+    background: #d13838;
+    border: 4px solid #d13838;
 }
 
 .bpm-input{
@@ -119,9 +121,7 @@ export default {
     font-family: inherit;
     background-color: white;
     border: 4px solid white;
-    padding-left: 6px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;  
+    border-radius: 4px;  
     outline: none;
     margin-right: 8px;
 }
